@@ -100,7 +100,9 @@ make update-action-readmes
 
 #### Authoring CI Workflows
 
-The CI workflows for trestle-bot leverage third party actions pinned to a hash  value which is updated by `dependabot.yml`. To author CI workflows, there should be an `action.yml` file referenced for each associated workflow. Authored CI workflows should be accessible by the `dependabot.yml` directories section. The `ci.yml` installs dependencies and runs tests that are sourced back to `dependabot.yml` through the associated actions directories. When authoring CI workflows, ensure that SHA values associated with the commit from the action's repository are used `{owner}/{repo}@{SHA}`.  
+The CI workflows for trestle-bot leverage third party actions pinned to a hash value which is updated by `dependabot.yml`. The purpose of pinning actions to a full length commit SHA is to ensure that action repository privileges are secure. Dependabot checks for the action's reference against the latest version ensuring a secure and consistently fast approach for dependency maintenance. 
+
+To properly use the `GITHUB_TOKEN` permissions for running CI workflows, you can modify the default permissions that are accessible by the `GITHUB_TOKEN` by using `jobs.<job_id>.permissions`. Then, ensuring minimum required access and configurability of workflow jobs for `GITHUB_TOKEN` permissions. When authoring CI workflows, ensure that SHA values associated with the commit from the action's repository are used `{owner}/{repo}@{SHA}`.  
 
 This approach is used for authoring CI workflows that utilize versioned actions to produce frequent updates from dependabot for python and GitHub Actions.  
 
