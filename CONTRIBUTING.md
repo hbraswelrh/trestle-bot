@@ -18,6 +18,7 @@ Before you start contributing, please take a moment to read through the guide be
     - [Documentation](#documentation)
       - [Architecture Decisions](#architecture-decisions)
       - [Update the `actions` files](#update-the-actions-files)
+      - [Authoring CI Workflows](#authoring-ci-workflows-for-trestlebot)
     - [License Text in Files](#license-text-in-files)
     - [Tools](#tools)
       - [Format and Styling](#format-and-styling)
@@ -97,14 +98,14 @@ Each `README.md` under the `actions` directory have an Actions Inputs and Action
 make update-action-readmes
 ```
 
-#### Authoring CI Workflows in trestle-bot
+#### Authoring CI Workflows
 
-The CI workflows for trestle-bot leverage third party actions pinned to a hash value which is updated by `dependabot.yml`. To author CI workflows, there should be an `action.yml` file referenced for each associated workflow. Authored CI workflows should be accessible by the `dependabot.yml` directories section. The `ci.yml` installs dependencies and runs tests that are sourced back to `dependabot.yml` through the associated actions directories. When authoring CI workflows, ensure that SHA values associated with the commit from the action's repository are used `{owner}/{repo}@{SHA}`.
+The CI workflows for trestle-bot leverage third party actions pinned to a hash  value which is updated by `dependabot.yml`. To author CI workflows, there should be an `action.yml` file referenced for each associated workflow. Authored CI workflows should be accessible by the `dependabot.yml` directories section. The `ci.yml` installs dependencies and runs tests that are sourced back to `dependabot.yml` through the associated actions directories. When authoring CI workflows, ensure that SHA values associated with the commit from the action's repository are used `{owner}/{repo}@{SHA}`.  
 
-This approach is used for authoring CI workflows that utilize versioned actions to produce frequent updates from dependabot for python and GitHub Actions.
+This approach is used for authoring CI workflows that utilize versioned actions to produce frequent updates from dependabot for python and GitHub Actions.  
 
 
-### License Text in Files
+### License Text in Files 
 
 Please use the SPDX license identifier in all source files.
 
