@@ -18,6 +18,7 @@ Before you start contributing, please take a moment to read through the guide be
     - [Documentation](#documentation)
       - [Architecture Decisions](#architecture-decisions)
       - [Update the `actions` files](#update-the-actions-files)
+      - [Authoring CI Workflows](#authoring-ci-workflows)
     - [License Text in Files](#license-text-in-files)
     - [Tools](#tools)
       - [Format and Styling](#format-and-styling)
@@ -72,7 +73,9 @@ For workflow diagrams, see the [diagrams](./docs/workflows/) under the `docs` fo
 #### Code structure
 
 - `actions` - Provides specific logic for `trestle-bot` tasks that are packaged as Actions. See [README.md](./actions/README.md) for more information.
-- `entrypoints` - Provides top level logic for specific user-facing tasks. These tasks are not necessarily related in any way so they are not organized into a hierarchical command structure, but they do inherit logic and flags from a base class.
+- `cli` - Provides top level logic for specific user-facing tasks. These tasks are not necessarily related so they are not organized into a hierarchical command structure, but they do share some common modules.
+- `cli/commands` - Provides top level logic for commands and their associated subcommands. The commands are accessed by the single entrypoint `root.py`.
+- `cli/options` - Provides command line options and arguments that are frequently used within `cli/commands`.
 - `provider.py, github.py, and gitlab.py` - Git provider abstract class and concrete implementations for interacting with the API.
 - `tasks` - Pre-tasks can be configured before the main git logic is run. Any task that does workspace management should go here.
 - `tasks/authored` - The `authored` package contains logic for managing authoring tasks for single instances of a top-level OSCAL model. These encapsulate logic from the `compliance-trestle` library and allows loose coupling between `tasks` and `authored` types.
@@ -96,6 +99,17 @@ Each `README.md` under the `actions` directory have an Actions Inputs and Action
 ```bash
 make update-action-readmes
 ```
+
+#### Authoring CI Workflows
+
+The CI workflows for trestle-bot leverage third party actions pinned to a hash value which is updated by `dependabot.yml`. The purpose of pinning actions to a full length commit SHA is to ensure that the action's code and behavior remain consistent. Actions that are pinned to full length commit SHAs act as immutable releases which allow for distinction between versions and an accurate history log. When selecting a commit SHA to include, the SHA value that is associated with the version of the action should be chosen from the associated action's repository. Dependabot checks for the action's reference against the latest version ensuring a secure and consistent approach to managing dependencies and version updating.
+
+To generate a pin for a third party action, there should be a full length commit SHA associated with the version of the action being referenced. The reference used is the full length SHA, tag, or branch that dependabot will use when updating dependencies and bumping versions.
+
+- The syntax for a specified action is: `OWNER/REPOSITORY@TAG-OR-SHA`.
+- The syntax for a specified reusable workflow is: `OWNER/REPOSITORY/PATH/FILENAME@TAG-OR-SHA`.
+
+This approach is used for authoring CI workflows that utilize versioned actions to produce frequent updates from dependabot for python and GitHub Actions.
 
 ### License Text in Files
 
@@ -146,11 +160,11 @@ make test-e2e
 #### Run with poetry
 ```
 make develop
-poetry run trestlebot-autosync
-poetry run trestlebot-rules-transform
-poetry run trestlebot-create-cd
-poetry run trestlebot-sync-upstreams
-poetry run trestlebot-create-ssp
+poetry run trestlebot autosync
+poetry run trestlebot rules-transform
+poetry run trestlebot create compdef
+poetry run trestlebot sync-upstreams
+poetry run trestlebot create ssp
 ```
 
 #### Local testing
@@ -178,15 +192,15 @@ INPUT_SKIP_ITEMS=
 INPUT_DRY_RUN=true
 INPUT_SKIP_ASSEMBLE=false
 INPUT_SKIP_REGENERATE=false
-INPUT_REPOSITORY=.
+INPUT_REPO_PATH=.
 INPUT_BRANCH=test
-INPUT_MARKDOWN_PATH=markdown/profiles
+INPUT_MARKDOWN_DIR=markdown/profiles
 INPUT_OSCAL_MODEL=profile
-INPUT_SSP_INDEX_PATH=
+INPUT_SSP_INDEX_FILE=
 INPUT_COMMIT_MESSAGE=
 INPUT_COMMIT_USER_NAME=testuser
 INPUT_COMMIT_USER_EMAIL=test@example.com
-INPUT_FILE_PATTERN=*.md,*.json
+INPUT_FILE_PATTERNS=*.md,*.json
 INPUT_COMMIT_AUTHOR_NAME=
 INPUT_COMMIT_AUTHOR_EMAIL=
 INPUT_TARGET_BRANCH=
