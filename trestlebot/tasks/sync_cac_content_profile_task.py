@@ -14,7 +14,7 @@ from ssg.products import (
     product_yaml_path,
 )
 
-from trestlebot.tasks.authored.base_authored import AuthoredObjectBase
+from trestlebot.tasks.authored.base_authored import AuthoredProfile
 from trestlebot.tasks.base_task import TaskBase
 from trestlebot.tasks.sync_cac_content_task import get_env_yaml
 
@@ -37,7 +37,7 @@ class SyncCacContentProfileTask(TaskBase):
         self.filter_by_level = filter_by_level
         self.authored_profile = authored_profile
         working_dir = self._authored_profile.get_trestle_root()
-        super().__init__(working_dir=trestle_root, model_filter=None)
+        super().__init__(working_dir=working_dir, model_filter=None)
 
     def get_control_ids_by_level(self, control_file: str, filter_by_level: str) -> None:
         """
@@ -76,15 +76,15 @@ class SyncCacContentProfileTask(TaskBase):
 
     def create_oscal_profile(
         self, import_path: str, controls: List[str], name_update: str
-    ):
+    ) -> None:
         # Step 1: If filter by level returns eligible controls, create OSCAL profile with suffix change based on level
         # Step 2: Fill in with control id, loading from eligible controls and all controls
         self.import_path = import_path
         # catalog is import_path
         name_update = f"{control_file}-{level}.json"
-        self.authored_profile.create_new_default(controls, name_update)
+        self.authored_profile.create_or_update(import_path, name_update, controls)
 
-    def execute(self):
+    def execute(self) -> int:
         # try and accept
         get_control_ids_by_level()
         pass
