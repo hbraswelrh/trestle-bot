@@ -25,7 +25,6 @@ test_prof = "simplified_nist_profile"
 test_cat = "simplified_nist_catalog"
 test_comp_path = f"component-definitions/{test_product}/component-definition.json"
 test_policy_id = "1234-levels"
-#tester_prof_path = f"profiles/{policy_id}-{filter_by_level}/profiles.json"
 test_level = "low"
 tester_prof_path = f"profiles/{test_policy_id}-{test_level}/profiles.json"
 
@@ -253,7 +252,7 @@ def test_profile_supplied(tmp_repo: Tuple[str, Repo]) -> None:
 
 
 def test_created_oscal_profile(tmp_repo: Tuple[str, Repo]) -> None:
-    """Tests creation of OSCAL profile and exists in correct path."""
+    """Tests creation of OSCAL profile in correct path."""
 
     repo_dir, _ = tmp_repo
     repo_path = pathlib.Path(repo_dir)
@@ -286,8 +285,8 @@ def test_created_oscal_profile(tmp_repo: Tuple[str, Repo]) -> None:
             "--dry-run",
         ],
     )
-    # Checking if the CLI input created an OSCAL Profile based on provided inputs
-    # Using oscal_profile to define the name to be referenced in cat_path
+    # Checking if CLI input created an OSCAL Profile
+    # Asserting profile exists within the correct test profile path
     # Profile should populate in profiles/{policy-id}-{filter-by-level}/profile.json
     assert result.exit_code == 0
     profile = repo_path.joinpath(test_prof_path)

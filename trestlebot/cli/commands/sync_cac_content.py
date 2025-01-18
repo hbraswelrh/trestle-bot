@@ -94,7 +94,7 @@ def sync_cac_content_cmd(ctx: click.Context, **kwargs: Any) -> None:
 
 @click.command(
     name="sync-cac-content-profile",
-    help="Authoring Oscal Profiles with synced CaC content.",
+    help="Authoring Oscal Profiles by level with synced CaC content.",
 )
 @click.pass_context
 @common_options
@@ -108,7 +108,7 @@ def sync_cac_content_cmd(ctx: click.Context, **kwargs: Any) -> None:
     "--product",
     type=str,
     required=True,
-    help="Product to build OSCAL Profile for.",
+    help="Product name for building OSCAL Profile.",
 )
 @click.option(
     "--oscal-catalog",
@@ -127,8 +127,6 @@ def sync_cac_content_cmd(ctx: click.Context, **kwargs: Any) -> None:
     type=str,
     required=False,
     multiple=True,
-    # default=List[str],
-    # default=list("all"),
     help="Optionally produce OSCAL Profiles by filtered baseline level.",
 )
 @handle_exceptions
@@ -136,13 +134,12 @@ def sync_cac_content_profile_cmd(
     ctx: click.Context,
     **kwargs: Any,
 ) -> None:
-    # WIP test
-    # The cac_content_root accesses the repository of control files
-    # User will input control file name to begin authoring OSCAL Profiles
-    # If user indicates level, a profile specific to indicated level will be produced
-    # If no level associated with control file, task will create single profile with all controls
+    # The cac_content_root accesses the repository of control files.
+    # User will input policy_id name to amend name of OSCAL Profile.
+    # If the user indicates level, an OSCAL Profile will be produced with criteria specific to that level.
+    # If no baseline level associated with policy id, task will create OSCAL Profiles for all levels.
     """
-    Sync cac content for authoring oscal profiles.
+    Sync cac content for authoring OSCAL Profiles.
     """
     pre_tasks: List[TaskBase] = []
 
@@ -153,7 +150,7 @@ def sync_cac_content_profile_cmd(
     policy_id = kwargs["policy_id"]
     filter_by_level = kwargs.get("filter_by_level", list())
 
-    # get path here
+    # Getting the catalog as a path from user input
     oscal_catalog_path = ModelUtils.get_model_path_for_name_and_class(
         working_dir,
         oscal_catalog,
@@ -172,9 +169,7 @@ def sync_cac_content_profile_cmd(
             authored_profile=authored_profile,
         )
     )
-    logger.debug("No levels included in control file.")
-    # get_model_path_for oscal catalog
+    logger.debug("The sync cac content profile task is complete.")
 
     pre_tasks.append(sync_cac_content_profile_task)
     run_bot(pre_tasks, kwargs)
-

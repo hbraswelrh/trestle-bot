@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2024 Red Hat, Inc.
-
-# Current work for sync_cac_content_profile
-# Task to leverage ComplianceasCode/content ControlsManager
-# Interaction with CLI
 import logging
 import os
 import pathlib
@@ -80,9 +76,7 @@ class SyncCacContentProfileTask(TaskBase):
         control_manager.load()
 
         # accessing control file within content/controls
-        # the instance can use the methods within the ControlsManager() class
-
-        # TODO Ask Marcus to address use of get_policy in PR notes
+        # the instance of the ControlsManager() object can use the relevant methods for handling controls.
 
         policy: Policy = control_manager._get_policy(policy_id)
         levels: Set[str] = set()
@@ -133,11 +127,6 @@ class SyncCacContentProfileTask(TaskBase):
         # even if changing profile inputs
         # Checks for importing model types (catalog, baseline)
         # AuthoredProfile will update based on existing_import
-        # If the models aren't equivalent based on the deep copy
-        # of the existing profile
-        # Then modelUtils will update profile element that was recently
-        # updated and write to the profile_path
-
         # label properties for controls are a common way to store the control formatted for display.
         # This is the way they are represented in control files.
         resolved_controls: List[str] = list()
