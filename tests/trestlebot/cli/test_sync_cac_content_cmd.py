@@ -27,6 +27,7 @@ test_product = "rhel8"
 # https://github.com/ComplianceAsCode/content/pull/12819
 test_content_dir = TEST_DATA_DIR / "content_dir"
 test_cac_profile = "products/rhel8/profiles/example.profile"
+test_cac_profiler = f"{test_content_dir}/products/rhel8/profiles/example.profile"
 test_prof = "simplified_nist_profile"
 test_cat = "simplified_nist_catalog"
 test_comp_path = f"component-definitions/{test_product}/component-definition.json"
