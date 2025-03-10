@@ -27,7 +27,10 @@ test_product = "rhel8"
 # https://github.com/ComplianceAsCode/content/pull/12819
 test_content_dir = TEST_DATA_DIR / "content_dir"
 test_cac_profile = "products/rhel8/profiles/example.profile"
-test_cac_profiler = f"{test_content_dir}/products/{test_product}/profiles/example.profile"
+# test_cac_profiler = f"{test_content_dir}/products/{test_product}/profiles/example.profile"
+# Added for matching command line args
+test_profile = "example"
+# test_cac_profile_op = f"{test_content_dir}/products/{test_product}/profiles/{test_profile}.profile"
 test_prof = "simplified_nist_profile"
 test_cat = "simplified_nist_catalog"
 test_comp_path = f"component-definitions/{test_product}/component-definition.json"
@@ -267,7 +270,7 @@ def test_sync_product(tmp_repo: Tuple[str, Repo]) -> None:
             "--cac-content-root",
             test_content_dir,
             "--cac-profile",
-            test_cac_profiler,
+            test_profile,
             "--oscal-profile",
             test_prof,
             "--committer-email",
