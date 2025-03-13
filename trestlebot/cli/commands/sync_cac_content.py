@@ -124,7 +124,12 @@ def sync_content_to_component_definition_cmd(ctx: click.Context, **kwargs: Any) 
     product = kwargs["product"]
     cac_content_root = kwargs["cac_content_root"]
     component_definition_type = kwargs["component_definition_type"]
-    cac_profile = os.path.join(cac_content_root, kwargs["cac_profile"])
+    cac_profile = kwargs["cac_profile"]
+    if not pathlib.Path(cac_profile).exists():
+        cac_profile = os.path.join(
+            f"{cac_content_root}/products/{product}/profiles/",
+            kwargs["cac_profile"] + ".profile",
+        )
     oscal_profile = kwargs["oscal_profile"]
     working_dir = str(kwargs["repo_path"].resolve())
 

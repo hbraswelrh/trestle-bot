@@ -27,7 +27,7 @@ poetry run trestlebot sync-cac-content component-definition \
   --repo-path $trestlebot_workspace_directory \
   --branch main \
   --cac-content-root ~/content \
-  --cac-profile $CacContentRepo/content/products/ocp4/profiles/high-rev-4.profile \
+  --cac-profile $high-rev-4 \
   --oscal-profile $OSCAL-profile-name \
   --committer-email test@redhat.com \
   --committer-name tester \
@@ -35,7 +35,6 @@ poetry run trestlebot sync-cac-content component-definition \
   --dry-run \
   --component-definition-type $type
 ```
-
 
 For more details about these options and additional flags, you can use the --help flag:
 `poetry run trestlebot sync-cac-content component-definition --help'
